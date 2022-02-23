@@ -2,10 +2,19 @@ import { Container } from "./components/Container";
 import { Button } from "./components/Button";
 import { styled } from "./stitches.config";
 import "./styles/App.css";
+import { useState } from "react";
+import { RenderTask } from "./components/RenderTask";
 
 //https://khush-react-todo.netlify.app/
 
 export default function App() {
+  const [userInput, setUserInput] = useState("");
+  const [todos, setTodos] = useState("");
+
+  const handleInput = (e) => {
+    setUserInput(e.target.value);
+  };
+
   return (
     <PageWrapper>
       <TasksContainer>
@@ -17,9 +26,15 @@ export default function App() {
           <Inputs type="text" placeholder="enter title"></Inputs>
           <label>ENTER TODO</label>
           <Inputs type="text" placeholder="enter text"></Inputs>
-          <Button size="large">Add</Button>
+          <Button size="large">ADD TODO</Button>
         </InputContainer>
-        <Footer></Footer>
+
+        <Footer>
+          <InfoButton>All</InfoButton>
+          <InfoButton>Active</InfoButton>
+          <InfoButton>Completed</InfoButton>
+          <InfoButton>Clear Completed</InfoButton>
+        </Footer>
       </TasksContainer>
     </PageWrapper>
   );
@@ -27,7 +42,7 @@ export default function App() {
 
 const PageWrapper = styled("div", {
   minHeight: "100vh",
-  width: "100vw",
+  Width: "100vw",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -35,21 +50,25 @@ const PageWrapper = styled("div", {
 });
 
 const TasksContainer = styled("div", {
-  width: "100%",
+  width: "200vw",
   maxWidth: "768px",
   minHeight: "500px",
   background: "$white",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
 });
 
 const InputContainer = styled("div", {
   width: "100%",
   marginTop: "10px",
   maxWidth: "768px",
-  minHeight: "150px",
+  minHeight: "170px",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "space-around",
+  borderBottom: "1px solid #E8E2CA ",
 });
 
 const Inputs = styled("input", {
@@ -65,5 +84,14 @@ const Footer = styled("div", {
   width: "100%",
   height: "50px",
   backgroundColor: "#E8E2CA",
-  marginTop: "195px",
+  display: "flex",
+  justifyContent: "space-around",
+  alignItems: "center",
+});
+
+const InfoButton = styled("button", {
+  border: "none",
+  background: "transparent",
+  fontWeight: "bold",
+  fontSize: "16px",
 });
