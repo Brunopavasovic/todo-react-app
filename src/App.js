@@ -7,12 +7,24 @@ import { RenderTask } from "./components/RenderTask";
 
 //https://khush-react-todo.netlify.app/
 
+const uniqueId = Math.floor(Math.random() * 100);
+
 export default function App() {
+  const [todos, setTodo] = useState();
   const [userInput, setUserInput] = useState("");
-  const [todos, setTodos] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addTodo(userInput);
+  };
 
   const handleInput = (e) => {
     setUserInput(e.target.value);
+  };
+
+  const addTodo = (text) => {
+    const newTodo = [...text];
+    setTodo(newTodo);
   };
 
   return (
@@ -23,12 +35,24 @@ export default function App() {
         </Container>
         <InputContainer>
           <label>ENTER TITLE:</label>
-          <Inputs type="text" placeholder="enter title"></Inputs>
+          <Inputs
+            type="text"
+            onChange={handleInput}
+            placeholder="enter title"
+          ></Inputs>
           <label>ENTER TODO</label>
-          <Inputs type="text" placeholder="enter text"></Inputs>
-          <Button size="large">ADD TODO</Button>
+          <Inputs
+            onChange={handleInput}
+            type="text"
+            placeholder="enter text"
+          ></Inputs>
+          <Button size="large" onClick={handleSubmit}>
+            ADD TODO
+          </Button>
         </InputContainer>
-
+        {todos.map((todo) => (
+          <RenderTask title={todo} task={todo} />
+        ))}
         <Footer>
           <InfoButton>All</InfoButton>
           <InfoButton>Active</InfoButton>
@@ -57,11 +81,11 @@ const TasksContainer = styled("div", {
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
+  color: "#000",
 });
 
 const InputContainer = styled("div", {
   width: "100%",
-  marginTop: "10px",
   maxWidth: "768px",
   minHeight: "170px",
   display: "flex",
@@ -78,6 +102,7 @@ const Inputs = styled("input", {
   outlineColor: "$blue-300",
   boxShadow: "-15px 16px 19px -16px rgba(0,0,0,0.2)",
   border: "1px solid #ccc",
+  backgroundColor: "#fff",
 });
 
 const Footer = styled("div", {
@@ -94,4 +119,5 @@ const InfoButton = styled("button", {
   background: "transparent",
   fontWeight: "bold",
   fontSize: "16px",
+  color: "#000",
 });
