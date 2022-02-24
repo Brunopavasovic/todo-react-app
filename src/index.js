@@ -3,9 +3,14 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { globalCss } from "./stitches.config";
+import { opinionated } from "stitches-normalize-css";
 
 const globalStyles = globalCss({
-  body: { margin: 0, padding: 0 },
+  ...opinionated,
+  input: {
+    background: "$white",
+  },
+  body: { margin: 0, padding: 0, background: "$white", color: "$gray-700" },
   html: { margin: 0, padding: 0 },
   "*": {
     boxSizing: "border-box",

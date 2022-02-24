@@ -4,27 +4,49 @@ import { styled } from "./stitches.config";
 import "./styles/App.css";
 import { useState } from "react";
 import { RenderTask } from "./components/RenderTask";
+import { uniqueId } from "./util";
 
-//https://khush-react-todo.netlify.app/
-
-const uniqueId = Math.floor(Math.random() * 100);
+const emptyInput = {
+  title: "",
+  task: "",
+};
 
 export default function App() {
-  const [todos, setTodo] = useState();
-  const [userInput, setUserInput] = useState("");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    addTodo(userInput);
-  };
+  const [todos, setTodos] = useState([]);
+  const [userInput, setUserInput] = useState(emptyInput);
 
   const handleInput = (e) => {
-    setUserInput(e.target.value);
+    const value = e.target.value;
+
+    setUserInput({
+      ...userInput,
+      [e.target.name]: value,
+    });
   };
 
-  const addTodo = (text) => {
-    const newTodo = [...text];
-    setTodo(newTodo);
+  const addTodo = (input) => {
+    const newTodo = {
+      id: uniqueId(),
+      done: false,
+      ...input,
+    };
+    setTodos([...todos, newTodo]);
+  };
+
+  const removeItem = (id) => {
+    const remove = todos.filter((todo) => {
+      return todo.id !== id;
+    });
+    setTodos(remove);
+  };
+
+  const handleSubmit = (e) => {
+    if (userInput.title === "" || userInput.task === "") {
+      return false;
+    }
+    e.preventDefault();
+    addTodo(userInput);
+    setUserInput(emptyInput);
   };
 
   return (
@@ -36,13 +58,17 @@ export default function App() {
         <InputContainer>
           <label>ENTER TITLE:</label>
           <Inputs
+            value={userInput.title}
+            name="title"
             type="text"
             onChange={handleInput}
             placeholder="enter title"
           ></Inputs>
-          <label>ENTER TODO</label>
+          <label>ENTER TODO:</label>
           <Inputs
+            name="task"
             onChange={handleInput}
+            value={userInput.task}
             type="text"
             placeholder="enter text"
           ></Inputs>
@@ -51,7 +77,12 @@ export default function App() {
           </Button>
         </InputContainer>
         {todos.map((todo) => (
-          <RenderTask title={todo} task={todo} />
+          <RenderTask
+            key={todo.id}
+            task={todo.task}
+            title={todo.title}
+            remove={() => removeItem(todo.id)}
+          />
         ))}
         <Footer>
           <InfoButton>All</InfoButton>
@@ -95,14 +126,20 @@ const InputContainer = styled("div", {
   borderBottom: "1px solid #E8E2CA ",
 });
 
+const inputOutline = {
+  outline: "#7CB9E8 auto 1px",
+};
+
 const Inputs = styled("input", {
   width: "300px",
   height: "30px",
   borderRadius: "5px",
-  outlineColor: "$blue-300",
+  outlineColor: "#7CB9E8",
   boxShadow: "-15px 16px 19px -16px rgba(0,0,0,0.2)",
   border: "1px solid #ccc",
-  backgroundColor: "#fff",
+  color: "$gray-700",
+  "&:focus": inputOutline,
+  "&:focus-visible": inputOutline,
 });
 
 const Footer = styled("div", {
@@ -120,4 +157,5 @@ const InfoButton = styled("button", {
   fontWeight: "bold",
   fontSize: "16px",
   color: "#000",
+  cursor: "pointer",
 });

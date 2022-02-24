@@ -4,8 +4,13 @@ import { styled } from "../stitches.config";
 export const RenderTask = (todo) => {
   return (
     <Dl>
-      <dt>adad{todo.title}</dt>
-      <dd>dadadad{todo.task}</dd>
+      <ImageButton onClick={todo.remove}>
+        {" "}
+        <img src="./cancel.png" alt="cancel" />
+      </ImageButton>
+      <Checkbox type="checkbox"></Checkbox>
+      <dt key={todo.id}>{todo.title}</dt>
+      <dd key={todo.id}>{todo.task}</dd>
     </Dl>
   );
 };
@@ -16,4 +21,20 @@ const Dl = styled("dl", {
   marginTop: "20px",
   padding: "10px",
   borderBottom: "1px solid #E8E2CA ",
+  position: "absoulte",
+});
+
+const Checkbox = styled("input", {
+  position: "relative",
+  right: "60px",
+  top: "25px",
+});
+
+const ImageButton = styled("button", {
+  border: "transparent",
+  background: "transparent",
+  position: "relative",
+  left: "$40",
+  top: "$8",
+  cursor: "pointer",
 });
