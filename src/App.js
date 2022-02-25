@@ -14,6 +14,7 @@ const emptyInput = {
 export default function App() {
   const [todos, setTodos] = useState([]);
   const [userInput, setUserInput] = useState(emptyInput);
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleInput = (e) => {
     const value = e.target.value;
@@ -27,7 +28,7 @@ export default function App() {
   const addTodo = (input) => {
     const newTodo = {
       id: uniqueId(),
-      done: false,
+      done: handleOnChange(),
       ...input,
     };
     setTodos([...todos, newTodo]);
@@ -38,6 +39,10 @@ export default function App() {
       return todo.id !== id;
     });
     setTodos(remove);
+  };
+
+  const handleOnChange = () => {
+    setIsChecked(!isChecked);
   };
 
   const handleSubmit = (e) => {
@@ -82,6 +87,8 @@ export default function App() {
             task={todo.task}
             title={todo.title}
             remove={() => removeItem(todo.id)}
+            checked={isChecked}
+            changed={handleOnChange}
           />
         ))}
         <Footer>

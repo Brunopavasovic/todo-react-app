@@ -8,7 +8,11 @@ export const RenderTask = (todo) => {
         {" "}
         <img src="./cancel.png" alt="cancel" />
       </ImageButton>
-      <Checkbox type="checkbox"></Checkbox>
+      <Checkbox
+        type="checkbox"
+        onChange={todo.changed}
+        checked={todo.checked}
+      ></Checkbox>
       <dt key={todo.id}>{todo.title}</dt>
       <dd key={todo.id}>{todo.task}</dd>
     </Dl>
