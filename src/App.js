@@ -5,6 +5,7 @@ import "./styles/App.css";
 import { useState } from "react";
 import { RenderTask } from "./components/RenderTask";
 import { uniqueId } from "./util";
+import { Footer } from "./components/Footer";
 
 const emptyInput = {
   title: "",
@@ -14,7 +15,6 @@ const emptyInput = {
 export default function App() {
   const [todos, setTodos] = useState([]);
   const [userInput, setUserInput] = useState(emptyInput);
-  const [isChecked, setIsChecked] = useState(false);
 
   const handleInput = (e) => {
     const value = e.target.value;
@@ -28,7 +28,7 @@ export default function App() {
   const addTodo = (input) => {
     const newTodo = {
       id: uniqueId(),
-      done: handleOnChange(),
+      done: false,
       ...input,
     };
     setTodos([...todos, newTodo]);
@@ -41,8 +41,30 @@ export default function App() {
     setTodos(remove);
   };
 
-  const handleOnChange = () => {
-    setIsChecked(!isChecked);
+  const handleOnChange = (todo) => {
+    const withChanges = todos.map((item) => {
+      if (item.id === todo.id) {
+        return todo;
+      }
+
+      return item;
+    });
+    setTodos(withChanges);
+  };
+
+  const clearCompleted = () => {
+    const cleared = todos.filter((todo) => !todo.done);
+    setTodos(cleared);
+  };
+
+  const completedItems = () => {
+    const comp = todos.filter((todo) => todo.done);
+    setTodos(comp);
+  };
+
+  const activeItems = () => {
+    const active = todos.filter((todo) => !todo.done);
+    setTodos(active);
   };
 
   const handleSubmit = (e) => {
@@ -84,19 +106,20 @@ export default function App() {
         {todos.map((todo) => (
           <RenderTask
             key={todo.id}
+            id={todo.id}
             task={todo.task}
             title={todo.title}
             remove={() => removeItem(todo.id)}
-            checked={isChecked}
-            changed={handleOnChange}
+            done={todo.done}
+            change={handleOnChange}
           />
         ))}
-        <Footer>
-          <InfoButton>All</InfoButton>
-          <InfoButton>Active</InfoButton>
-          <InfoButton>Completed</InfoButton>
-          <InfoButton>Clear Completed</InfoButton>
-        </Footer>
+        <Footer
+          todos={todos}
+          completedItems={completedItems}
+          clearCompleted={clearCompleted}
+          activeItems={activeItems}
+        />
       </TasksContainer>
     </PageWrapper>
   );
@@ -147,22 +170,4 @@ const Inputs = styled("input", {
   color: "$gray-700",
   "&:focus": inputOutline,
   "&:focus-visible": inputOutline,
-});
-
-const Footer = styled("div", {
-  width: "100%",
-  height: "50px",
-  backgroundColor: "#E8E2CA",
-  display: "flex",
-  justifyContent: "space-around",
-  alignItems: "center",
-});
-
-const InfoButton = styled("button", {
-  border: "none",
-  background: "transparent",
-  fontWeight: "bold",
-  fontSize: "16px",
-  color: "#000",
-  cursor: "pointer",
 });

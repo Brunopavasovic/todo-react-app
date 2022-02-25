@@ -1,20 +1,24 @@
 import React from "react";
 import { styled } from "../stitches.config";
 
-export const RenderTask = (todo) => {
+export const RenderTask = ({ remove, change, ...todo }) => {
+  const toggleDone = (ev) => {
+    change({ ...todo, done: ev.target.checked });
+  };
+
   return (
     <Dl>
-      <ImageButton onClick={todo.remove}>
+      <ImageButton onClick={remove}>
         {" "}
         <img src="./cancel.png" alt="cancel" />
       </ImageButton>
       <Checkbox
         type="checkbox"
-        onChange={todo.changed}
-        checked={todo.checked}
+        onChange={toggleDone}
+        checked={todo.done}
       ></Checkbox>
-      <dt key={todo.id}>{todo.title}</dt>
-      <dd key={todo.id}>{todo.task}</dd>
+      <dt>{todo.title}</dt>
+      <dd>{todo.task}</dd>
     </Dl>
   );
 };
