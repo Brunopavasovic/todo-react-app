@@ -4,7 +4,7 @@ import { styled } from "./stitches.config";
 import "./styles/App.css";
 import { useState } from "react";
 import { RenderTask } from "./components/RenderTask";
-import { uniqueId } from "./util";
+import { filterItems, uniqueId } from "./util";
 import { Footer } from "./components/Footer";
 
 const emptyInput = {
@@ -15,6 +15,7 @@ const emptyInput = {
 export default function App() {
   const [todos, setTodos] = useState([]);
   const [userInput, setUserInput] = useState(emptyInput);
+  const [view, setView] = useState("all");
 
   const handleInput = (e) => {
     const value = e.target.value;
@@ -57,16 +58,6 @@ export default function App() {
     setTodos(cleared);
   };
 
-  const completedItems = () => {
-    const comp = todos.filter((todo) => todo.done);
-    setTodos(comp);
-  };
-
-  const activeItems = () => {
-    const active = todos.filter((todo) => !todo.done);
-    setTodos(active);
-  };
-
   const handleSubmit = (e) => {
     if (userInput.title === "" || userInput.task === "") {
       return false;
@@ -75,6 +66,8 @@ export default function App() {
     addTodo(userInput);
     setUserInput(emptyInput);
   };
+
+  const visibleTodos = filterItems(todos, view);
 
   return (
     <PageWrapper>
@@ -103,7 +96,7 @@ export default function App() {
             ADD TODO
           </Button>
         </InputContainer>
-        {todos.map((todo) => (
+        {visibleTodos.map((todo) => (
           <RenderTask
             key={todo.id}
             id={todo.id}
@@ -116,9 +109,9 @@ export default function App() {
         ))}
         <Footer
           todos={todos}
-          completedItems={completedItems}
+          view={view}
+          setView={setView}
           clearCompleted={clearCompleted}
-          activeItems={activeItems}
         />
       </TasksContainer>
     </PageWrapper>

@@ -1,19 +1,29 @@
 import React from "react";
 import { styled } from "../stitches.config";
+import { filterItems } from "../util";
 
-export const Footer = ({
-  todos,
-  clearCompleted,
-  completedItems,
-  activeItems,
-}) => {
+export const Footer = ({ todos, clearCompleted, view, setView }) => {
   const all = todos.length;
+  const completed = filterItems(todos, "completed").length;
+  const active = filterItems(todos, "active").length;
 
   return (
     <Filter>
-      <FilterButton>All ({all})</FilterButton>
-      <FilterButton onClick={activeItems}>Active</FilterButton>
-      <FilterButton onClick={completedItems}>Completed </FilterButton>
+      <FilterButton isActive={view === "all"} onClick={() => setView("all")}>
+        All ({all})
+      </FilterButton>
+      <FilterButton
+        isActive={view === "active"}
+        onClick={() => setView("active")}
+      >
+        Active ({active})
+      </FilterButton>
+      <FilterButton
+        isActive={view === "completed"}
+        onClick={() => setView("completed")}
+      >
+        Completed ({completed})
+      </FilterButton>
       <FilterButton onClick={clearCompleted}>Clear Completed</FilterButton>
     </Filter>
   );
@@ -35,4 +45,11 @@ const FilterButton = styled("button", {
   fontSize: "16px",
   color: "#000",
   cursor: "pointer",
+  variants: {
+    isActive: {
+      true: {
+        textDecoration: "underline",
+      },
+    },
+  },
 });

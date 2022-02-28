@@ -34,7 +34,7 @@ const Dl = styled("dl", {
 
 const Checkbox = styled("input", {
   position: "relative",
-  right: "60px",
+  right: "200px",
   top: "25px",
 });
 
