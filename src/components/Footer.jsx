@@ -48,7 +48,7 @@ const FilterButton = styled("button", {
   variants: {
     isActive: {
       true: {
-        textDecoration: "underline",
+        color: "#7CB9E8",
       },
     },
   },
