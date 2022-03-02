@@ -6,6 +6,7 @@ export const Edit = (props) => {
     <EditContainer>
       <EditForm onSubmit={props.submit}>
         <Inputs
+          key={props.id}
           onChange={props.onChange}
           value={props.value}
           type="text"
