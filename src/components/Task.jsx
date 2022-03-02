@@ -4,24 +4,26 @@ import { Edit } from "./Edit";
 import { Portal } from "react-portal";
 import { useState } from "react";
 
-export const Task = ({ remove, change, edit, ...todo }) => {
+export const Task = ({ remove, change, props, edit, ...todo }) => {
   const toggleDone = (ev) => {
     change({ ...todo, done: ev.target.checked });
   };
   const [editing, setEditing] = useState(false);
-  const [editInput, setEditInput] = useState({ title: todo.title });
-  const [newValue, setNewValue] = useState("");
+  const [newItem, setNewItem] = useState("");
 
   const toggleComp = () => {
     setEditing(!editing);
   };
 
   const handleEditInput = (e) => {
-    setEditInput(e.target.value);
+    setNewItem(e.target.value);
   };
 
-  const renameInput = () => {
-    const newInput = todo.map((item) => {});
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    edit(todo.id, newItem);
+    setNewItem("");
+    setEditing(editing);
   };
 
   return (
@@ -39,14 +41,17 @@ export const Task = ({ remove, change, edit, ...todo }) => {
         checked={todo.done}
         title="check task for done"
       ></Checkbox>
-      <dt>
-        {todo.title}
-        {editInput}
-      </dt>
+      <dt>{todo.title}</dt>
       <dd>{todo.task}</dd>
       <Portal>
         {editing && (
-          <Edit handleClose={toggleComp} onChange={handleEditInput} />
+          <Edit
+            handleClose={toggleComp}
+            onChange={handleEditInput}
+            value={newItem}
+            rename={edit}
+            submit={handleSubmit}
+          />
         )}
       </Portal>
     </Dl>

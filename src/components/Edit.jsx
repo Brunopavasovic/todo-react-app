@@ -4,9 +4,10 @@ import { Button } from "./Button";
 export const Edit = (props) => {
   return (
     <EditContainer>
-      <EditForm>
+      <EditForm onSubmit={props.submit}>
         <Inputs
           onChange={props.onChange}
+          value={props.value}
           type="text"
           placeholder="enter text"
         ></Inputs>
