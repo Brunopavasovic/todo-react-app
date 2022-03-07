@@ -4,7 +4,13 @@ import { Edit } from "./Edit";
 import { Portal } from "react-portal";
 import { useState } from "react";
 
-export const Task = ({ remove, change, edit, ...todo }) => {
+export const Task = ({
+  remove,
+  change,
+  edit,
+
+  ...todo
+}) => {
   const toggleDone = (ev) => {
     change({ ...todo, done: ev.target.checked });
   };
@@ -17,13 +23,6 @@ export const Task = ({ remove, change, edit, ...todo }) => {
 
   const handleEditInput = (e) => {
     setNewItem(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setNewItem("");
-    edit(todo.id, newItem);
-    setEditing(editing);
   };
 
   return (
@@ -49,9 +48,8 @@ export const Task = ({ remove, change, edit, ...todo }) => {
             handleClose={toggleComp}
             onChange={handleEditInput}
             value={newItem}
-            rename={edit}
-            submit={handleSubmit}
-            id={edit.id}
+            rename={() => edit(todo.id, newItem)}
+            id={todo.id}
           />
         )}
       </Portal>

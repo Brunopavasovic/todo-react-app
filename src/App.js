@@ -1,15 +1,24 @@
 import { Container } from "./components/Container";
 import { styled } from "./stitches.config";
 import "./styles/App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Task } from "./components/Task";
 import { filterItems, uniqueId } from "./util";
 import { Footer } from "./components/Footer";
 import { Form } from "./components/Form";
 
 export default function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(() => {
+    const savedTodos = localStorage.getItem("todos");
+    if (savedTodos) {
+      return JSON.parse(savedTodos);
+    }
+  }, []);
   const [view, setView] = useState("all");
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   const removeItem = (id) => {
     const remove = todos.filter((todo) => {
@@ -41,7 +50,7 @@ export default function App() {
   const handleUpdateItem = (id, newItem) => {
     const update = todos.map((todo) => {
       if (id === todo.id) {
-        return [{ ...todo, title: newItem }];
+        return (todo.title = newItem);
       }
       return todo;
     });

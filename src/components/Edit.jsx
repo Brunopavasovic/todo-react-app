@@ -4,7 +4,7 @@ import { Button } from "./Button";
 export const Edit = (props) => {
   return (
     <EditContainer>
-      <EditForm onSubmit={props.submit}>
+      <EditForm>
         <Inputs
           key={props.id}
           onChange={props.onChange}
