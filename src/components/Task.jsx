@@ -8,7 +8,6 @@ export const Task = ({
   remove,
   change,
   edit,
-
   ...todo
 }) => {
   const toggleDone = (ev) => {
