@@ -47,7 +47,7 @@ export const Task = ({
             handleClose={toggleComp}
             onChange={handleEditInput}
             value={newItem}
-            rename={() => edit(todo.id, newItem)}
+            rename={() => edit(todo.id ,newItem)}
             id={todo.id}
           />
         )}

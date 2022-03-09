@@ -1,21 +1,22 @@
 import { styled } from "../stitches.config";
 import { Button } from "./Button";
 
-export const Edit = (props) => {
+export const Edit = ({ onChange , value ,rename ,handleClose}) => {
   return (
     <EditContainer>
       <EditForm>
         <Inputs
-          key={props.id}
-          onChange={props.onChange}
-          value={props.value}
+          
+          onChange={onChange}
+          value={value}
           type="text"
           placeholder="enter text"
         ></Inputs>
-        <Button onClick={props.rename} type="button" size="large">
-          Save Item
+        <Button onClick={rename} type="button" size="large">
+          Save
         </Button>
-        <Button onClick={props.handleClose} type="button" size="large">
+        <Button
+        onClick={handleClose} type="button" size="large">
           Close
         </Button>
       </EditForm>

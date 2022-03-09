@@ -50,6 +50,8 @@ export default function App() {
     setTodos(update);
   };
 
+ 
+
   const clearCompleted = () => {
     const cleared = todos.filter((todo) => !todo.done);
     setTodos(cleared);
@@ -74,6 +76,7 @@ export default function App() {
             done={todo.done}
             change={handleOnChange}
             edit={handleUpdateItem}
+            
           />
         ))}
         <Footer
