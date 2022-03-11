@@ -7,22 +7,33 @@ import { useState } from "react";
 export const Task = ({
   remove,
   change,
-  edit,
+  setTodos,
+  todos,
   ...todo
 }) => {
   const toggleDone = (ev) => {
     change({ ...todo, done: ev.target.checked });
   };
   const [editing, setEditing] = useState(false);
-  const [newItem, setNewItem] = useState("");
+  const [newItem, setNewItem] = useState({});
 
   const toggleComp = () => {
     setEditing(!editing);
   };
 
-  const handleEditInput = (e) => {
-    setNewItem(e.target.value);
-  };
+  const handleEditSubmit = (e) => {
+     e.preventDefault();
+     handleUpdateTodo(todo.id , newItem)
+  }
+
+
+  const handleUpdateTodo = (id , newTodo ) => {
+    const update = todos.map(item => {
+      return item.id === id ? newTodo : item
+    })
+  
+    setTodos(update)
+  }
 
   return (
     <Dl>
@@ -37,7 +48,7 @@ export const Task = ({
         type="checkbox"
         onChange={toggleDone}
         checked={todo.done}
-        title="check task for done"
+        title={todo.title}
       ></Checkbox>
       <dt>{todo.title}</dt>
       <dd>{todo.task}</dd>
@@ -45,10 +56,13 @@ export const Task = ({
         {editing && (
           <Edit
             handleClose={toggleComp}
-            onChange={handleEditInput}
-            value={newItem}
-            rename={() => edit(todo.id ,newItem)}
-            id={todo.id}
+            onChange={(e)=> setNewItem({...newItem , title: e.target.value})}
+            value={newItem.title ?? ""}
+            rename={handleEditSubmit}
+            
+            
+            
+            
           />
         )}
       </Portal>

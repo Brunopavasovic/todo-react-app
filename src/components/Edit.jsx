@@ -1,11 +1,12 @@
 import { styled } from "../stitches.config";
 import { Button } from "./Button";
 
-export const Edit = ({ onChange , value ,rename ,handleClose}) => {
+
+export const Edit = ({ onChange , value, rename ,handleClose}) => {
   return (
     <EditContainer>
       <EditForm>
-        <Inputs
+        <Inputs 
           
           onChange={onChange}
           value={value}

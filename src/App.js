@@ -40,17 +40,7 @@ export default function App() {
     setTodos(withChanges);
   };
 
-  const handleUpdateItem = (id, newItem) => {
-    const update = todos.map((todo) => {
-      if (id === todo.id) {
-        return (todo.title = newItem)
-      };
-      return todo;
-    });
-    setTodos(update);
-  };
 
- 
 
   const clearCompleted = () => {
     const cleared = todos.filter((todo) => !todo.done);
@@ -75,7 +65,9 @@ export default function App() {
             remove={() => removeItem(todo.id)}
             done={todo.done}
             change={handleOnChange}
-            edit={handleUpdateItem}
+            setTodos={setTodos}
+            todos={todos}
+          
             
           />
         ))}
