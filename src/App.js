@@ -1,30 +1,36 @@
 import { Container } from "./components/Container";
 import { styled } from "./stitches.config";
 import "./styles/App.css";
-import { useState } from "react";
-import { Task } from "./components/Task";
-import { filterItems, uniqueId } from "./util";
-import { Footer } from "./components/Footer";
+import { useState, useEffect } from "react";
+import { filterItems } from "./util";
 import { Form } from "./components/Form";
+import { getTodos, createTodo, removeTodo } from "./api";
+import { TodoList } from "./components/TodoList";
+import { Footer } from "./components/Footer";
+import { Loading } from "./components/Loading";
 
 export default function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(null);
   const [view, setView] = useState("all");
 
-  const removeItem = (id) => {
-    const remove = todos.filter((todo) => {
-      return todo.id !== id;
-    });
+  useEffect(() => {
+    getTodos().then(setTodos);
+  }, []);
+
+  console.log(todos);
+
+  const clearCompleted = () => {
+    const cleared = todos.filter((todo) => !todo.done);
+    setTodos(cleared);
+  };
+  const removeItem = async (id) => {
+    await removeTodo(id);
+    const remove = todos.filter((todo) => todo.id !== id);
     setTodos(remove);
   };
 
   const addTodo = (input) => {
-    const newTodo = {
-      id: uniqueId(),
-      done: false,
-      ...input,
-    };
-    setTodos([...todos, newTodo]);
+    createTodo(input).then((res) => setTodos((prevVal) => [...prevVal, res]));
   };
 
   const handleOnChange = (todo) => {
@@ -38,12 +44,7 @@ export default function App() {
     setTodos(withChanges);
   };
 
-  const clearCompleted = () => {
-    const cleared = todos.filter((todo) => !todo.done);
-    setTodos(cleared);
-  };
-
-  const visibleTodos = filterItems(todos, view);
+  const visibleTodos = todos !== null ? filterItems(todos, view) : null;
 
   return (
     <PageWrapper>
@@ -51,26 +52,26 @@ export default function App() {
         <Container>
           <h1>Todo Tasks</h1>
         </Container>
-        <Form addTodo={addTodo} />
-        {visibleTodos.map((todo) => (
-          <Task
-            key={todo.id}
-            id={todo.id}
-            task={todo.task}
-            title={todo.title}
-            remove={() => removeItem(todo.id)}
-            done={todo.done}
-            change={handleOnChange}
-            setTodos={setTodos}
-            todos={todos}
-          />
-        ))}
-        <Footer
-          todos={todos}
-          view={view}
-          setView={setView}
-          clearCompleted={clearCompleted}
-        />
+        <Form setTodos={setTodos} todos={todos} addTodo={addTodo} />
+        {visibleTodos ? (
+          <>
+            <TodoList
+              setView={setView}
+              todos={todos}
+              removeItem={removeItem}
+              handleOnChange={handleOnChange}
+            />
+
+            <Footer
+              todos={todos}
+              view={view}
+              setView={setView}
+              clearCompleted={clearCompleted}
+            />
+          </>
+        ) : (
+          <Loading />
+        )}
       </TasksContainer>
     </PageWrapper>
   );

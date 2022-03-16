@@ -4,10 +4,10 @@ import { styled } from "../stitches.config";
 
 const emptyInput = {
   title: "",
-  task: "",
+  description: "",
 };
 
-export const Form = (props) => {
+export const Form = ({ addTodo }) => {
   const [userInput, setUserInput] = useState(emptyInput);
 
   const handleInput = (e) => {
@@ -20,11 +20,11 @@ export const Form = (props) => {
   };
 
   const handleSubmit = (e) => {
-    if (userInput.title === "" || userInput.task === "") {
+    if (userInput.title === "" || userInput.description === "") {
       return false;
     }
     e.preventDefault();
-    props.addTodo(userInput);
+    addTodo(userInput);
     setUserInput(emptyInput);
   };
 
@@ -40,9 +40,9 @@ export const Form = (props) => {
       ></Inputs>
       <label>ENTER TODO:</label>
       <Inputs
-        name="task"
+        name="description"
         onChange={handleInput}
-        value={userInput.task}
+        value={userInput.description}
         type="text"
         placeholder="enter text"
       ></Inputs>

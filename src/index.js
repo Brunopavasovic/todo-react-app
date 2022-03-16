@@ -4,6 +4,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { globalCss } from "./stitches.config";
 import { opinionated } from "stitches-normalize-css";
+import "bootstrap/dist/css/bootstrap.css";
 
 const globalStyles = globalCss({
   ...opinionated,

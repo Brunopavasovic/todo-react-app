@@ -3,6 +3,7 @@ import { styled } from "../stitches.config";
 import { Edit } from "./Edit";
 import { Portal } from "react-portal";
 import { useState } from "react";
+import { updateTodo } from "../api";
 
 export const Task = ({ remove, change, setTodos, todos, ...todo }) => {
   const toggleDone = (ev) => {
@@ -18,11 +19,12 @@ export const Task = ({ remove, change, setTodos, todos, ...todo }) => {
   const handleEditSubmit = (e) => {
     e.preventDefault();
     handleUpdateTodo(todo.id, newItem);
+    toggleComp();
   };
 
-  const handleUpdateTodo = (id, newTodo) => {
+  const handleUpdateTodo = async (id, newTodo) => {
     const update = todos.map((item) => {
-      return item.id === id ? newTodo : item;
+      return item.id === id ? { ...item, ...newTodo } : item;
     });
 
     setTodos(update);
@@ -44,7 +46,7 @@ export const Task = ({ remove, change, setTodos, todos, ...todo }) => {
         title={todo.title}
       ></Checkbox>
       <dt>{todo.title}</dt>
-      <dd>{todo.task}</dd>
+      <dd>{todo.description}</dd>
       <Portal>
         {editing && (
           <Edit
@@ -70,7 +72,7 @@ const Dl = styled("dl", {
 
 const Checkbox = styled("input", {
   position: "relative",
-  left: "50px",
+  left: "170px",
   top: "25px",
 });
 
@@ -78,8 +80,8 @@ const ImageButton = styled("button", {
   border: "transparent",
   background: "transparent",
   position: "relative",
-  left: "$40",
-  top: "$8",
+  left: "290px",
+  top: "$6",
   cursor: "pointer",
 });
 
@@ -88,10 +90,10 @@ const EditButton = styled("button", {
   border: "1px solid $gray-500",
   color: "$gray-800",
   backgroundColor: "#E8E2CA",
-  padding: "$2 $3",
+  padding: "$1 $2",
   borderRadius: "$lg",
   position: "relative",
-  left: "$40",
+  left: "300px",
   top: "$6",
 
   "&:hover": {
