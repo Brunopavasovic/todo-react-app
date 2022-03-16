@@ -4,13 +4,7 @@ import { Edit } from "./Edit";
 import { Portal } from "react-portal";
 import { useState } from "react";
 
-export const Task = ({
-  remove,
-  change,
-  setTodos,
-  todos,
-  ...todo
-}) => {
+export const Task = ({ remove, change, setTodos, todos, ...todo }) => {
   const toggleDone = (ev) => {
     change({ ...todo, done: ev.target.checked });
   };
@@ -22,18 +16,17 @@ export const Task = ({
   };
 
   const handleEditSubmit = (e) => {
-     e.preventDefault();
-     handleUpdateTodo(todo.id , newItem)
-  }
+    e.preventDefault();
+    handleUpdateTodo(todo.id, newItem);
+  };
 
+  const handleUpdateTodo = (id, newTodo) => {
+    const update = todos.map((item) => {
+      return item.id === id ? newTodo : item;
+    });
 
-  const handleUpdateTodo = (id , newTodo ) => {
-    const update = todos.map(item => {
-      return item.id === id ? newTodo : item
-    })
-  
-    setTodos(update)
-  }
+    setTodos(update);
+  };
 
   return (
     <Dl>
@@ -56,13 +49,9 @@ export const Task = ({
         {editing && (
           <Edit
             handleClose={toggleComp}
-            onChange={(e)=> setNewItem({...newItem , title: e.target.value})}
+            onChange={(e) => setNewItem({ ...newItem, title: e.target.value })}
             value={newItem.title ?? ""}
             rename={handleEditSubmit}
-            
-            
-            
-            
           />
         )}
       </Portal>

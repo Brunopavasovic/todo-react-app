@@ -11,8 +11,6 @@ export default function App() {
   const [todos, setTodos] = useState([]);
   const [view, setView] = useState("all");
 
-  
-
   const removeItem = (id) => {
     const remove = todos.filter((todo) => {
       return todo.id !== id;
@@ -40,8 +38,6 @@ export default function App() {
     setTodos(withChanges);
   };
 
-
-
   const clearCompleted = () => {
     const cleared = todos.filter((todo) => !todo.done);
     setTodos(cleared);
@@ -67,8 +63,6 @@ export default function App() {
             change={handleOnChange}
             setTodos={setTodos}
             todos={todos}
-          
-            
           />
         ))}
         <Footer
